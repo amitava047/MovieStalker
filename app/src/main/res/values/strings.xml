@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movie Stalker</string>
+    <string-array name="sort_by_option">
+        <item>Popularity</item>
+        <item>Rating</item>
+    </string-array>
+    <string name="error_message">Connection Error!</string>
+</resources>

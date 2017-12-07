@@ -1,7 +1,10 @@
 package com.example.amitava.moviestalker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -145,33 +148,38 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(URL... urls) {
+            Context context = MainActivity.this;
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
             URL queryUrl = urls[0];
             String movieDbQueryResult = null;
-            try{
-                movieDbQueryResult = NetworkUtilities.getResponseFromHttpUrl(queryUrl);
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-            try{
-                //Store the JSON Object
-                JSONObject jsonObject = new JSONObject(movieDbQueryResult);
-                //Retrieve the JSON Array
-                JSONArray movieResults = jsonObject.getJSONArray("results");
-                //GridItem Object to store the values for each item
-                GridItem item;
-                //Loop for retrieving all the Posters ID and storing in the view
-                for(int counter=0; counter<movieResults.length(); counter++){
-                    JSONObject movie = movieResults.getJSONObject(counter);
-                    String posterPath = movie.getString("poster_path");
-                    String posterTitle = movie.getString("title");
-                    String posterDetails = movie.getString("overview");
-                    String posterReleaseDate = movie.getString("release_date");
-                    String posterRating = movie.getString("vote_average");
-                    item = new GridItem();
-                    item.setTitle(posterTitle);
-                    item.setImage("http://image.tmdb.org/t/p/w500/" +posterPath);
-                    item.setOverview("Overview: "+posterDetails);
-                    item.setRating("Rating: " +posterRating);
+            if(isConnected){
+                try{
+                    movieDbQueryResult = NetworkUtilities.getResponseFromHttpUrl(queryUrl);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                try{
+                    //Store the JSON Object
+                    JSONObject jsonObject = new JSONObject(movieDbQueryResult);
+                    //Retrieve the JSON Array
+                    JSONArray movieResults = jsonObject.getJSONArray("results");
+                    //GridItem Object to store the values for each item
+                    GridItem item;
+                    //Loop for retrieving all the Posters ID and storing in the view
+                    for(int counter=0; counter<movieResults.length(); counter++){
+                        JSONObject movie = movieResults.getJSONObject(counter);
+                        String posterPath = movie.getString("poster_path");
+                        String posterTitle = movie.getString("title");
+                        String posterDetails = movie.getString("overview");
+                        String posterReleaseDate = movie.getString("release_date");
+                        String posterRating = movie.getString("vote_average");
+                        item = new GridItem();
+                        item.setTitle(posterTitle);
+                        item.setImage("http://image.tmdb.org/t/p/w500/" +posterPath);
+                        item.setOverview("Overview: "+posterDetails);
+                        item.setRating("Rating: " +posterRating);
 
 //                    DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 //                    String releaseDateToDisplay = null;
@@ -181,11 +189,12 @@ public class MainActivity extends AppCompatActivity {
 //                    } catch (ParseException e) {
 //                        e.printStackTrace();
 //                    }
-                    item.setReleaseDate("Release Date: " +posterReleaseDate);
-                    mGridData.add(item);
+                        item.setReleaseDate("Release Date: " +posterReleaseDate);
+                        mGridData.add(item);
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
                 }
-            } catch (JSONException e){
-                e.printStackTrace();
             }
             return movieDbQueryResult;
         }

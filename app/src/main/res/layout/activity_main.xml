@@ -12,8 +12,8 @@
         android:layout_height="match_parent"
         android:id="@+id/gv_movie_list"
         android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
+        android:verticalSpacing="@dimen/grid_view_vertical_spacing"
+        android:horizontalSpacing="@dimen/grid_view_horizontal_spacing"
         android:scrollbarStyle="outsideOverlay"
         android:verticalScrollbarPosition="right"
         android:scrollbars="vertical"
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="16dp"
+        android:padding="@dimen/text_view_padding"
         android:text="@string/error_message"
         android:textColor="#ff0000"
         android:textSize="22sp"
@@ -51,8 +51,8 @@
         android:visibility="invisible" />
     
     <ProgressBar
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/progress_bar_height_width"
+        android:layout_height="@dimen/progress_bar_height_width"
         android:id="@+id/pb_loading_indicator"
         android:layout_gravity="center"
         android:visibility="invisible"/>

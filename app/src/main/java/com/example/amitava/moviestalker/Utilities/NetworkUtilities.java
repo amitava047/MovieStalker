@@ -18,17 +18,17 @@ import java.util.Scanner;
 public class NetworkUtilities {
 
     private static final String TAG = NetworkUtilities.class.getSimpleName();
-    private static final String MOVIE_DB_URL = "https://api.themoviedb.org/3/discover/movie?";
-    private static final String PARAM_QUERY = "?";
-    private static final String PARAM_SORT = "sort_by";
-    private static final String PARAM_CONCAT = "&";
+    private static final String MOVIE_DB_URL = "https://api.themoviedb.org/3/movie/";
+    //private static final String PARAM_QUERY = "?";
+    private static final String PARAM_SORT = "/";
+    //private static final String PARAM_CONCAT = "&";
     private static final String PARAM_API = "api_key";
     private static final String API = BuildConfig.MY_MOVIE_DB_API_KEY;
 
 
     public static URL buildUrl(String movieDbSearchQuery){
         Uri uri = Uri.parse(MOVIE_DB_URL).buildUpon()
-                .appendQueryParameter(PARAM_SORT,movieDbSearchQuery)
+                .appendPath(movieDbSearchQuery)
                 .appendQueryParameter(PARAM_API,API)
                 .build();
         URL url = null;

@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
     private void changeMovieSort(String chosenOption){
         String temp;
         if(chosenOption.equals("Popularity")){
-            temp = "popularity.desc";
+            temp = "popular";
         }else{
-            temp = "vote_average.desc";
+            temp = "top_rated";
         }
         URL movieDbSearchUrl = NetworkUtilities.buildUrl(temp);
         new MovieDbQueryTask().execute(movieDbSearchUrl);
